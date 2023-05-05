@@ -1,19 +1,18 @@
 package com.masai.entities;
 
-import java.io.Serializable;
 
-public class User implements Serializable{
+public class User{
 
 	private String username;
 	private String password;
-	private double mobileNo;
+	private String mobileNo;
 	private String email;
 
 	public User() {
 		super();
 	}
 
-	public User(String username, String password, double mobileNo, String email) {
+	public User(String username, String password, String mobileNo, String email) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -37,11 +36,11 @@ public class User implements Serializable{
 		this.password = password;
 	}
 
-	public double getAddress() {
+	public String getAddress() {
 		return mobileNo;
 	}
 
-	public void setAddress(double mobileNo) {
+	public void setAddress(String mobileNo) {
 		this.mobileNo = mobileNo;
 	}
 

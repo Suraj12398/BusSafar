@@ -10,7 +10,7 @@ public class Bus {
     private Date departureTime;
     private Date arrivalTime;
     private int totalSeats;
-    
+    private int[] seatMap;
     
     public Bus(String busName, String source, String destination, String busType,
             Date departureTime, Date arrivalTime, int totalSeats) {
@@ -21,6 +21,7 @@ public class Bus {
      this.departureTime = departureTime;
      this.arrivalTime = arrivalTime;
      this.totalSeats = totalSeats;
+     this.seatMap = new int[totalSeats];
  }
 	
 	
@@ -67,16 +68,32 @@ public class Bus {
 	public void setTotalSeats(int totalSeats) {
 		this.totalSeats = totalSeats;
 	}
-	 @Override
+	public int[] getSeatMap() {
+        return seatMap;
+    }
+	
+
+
+
+	@Override
 	    public String toString() {
-	        return "Bus{" +
+	        return 
 	                "busName='" + busName + '\'' +
 	                ", source='" + source + '\'' +
 	                ", destination='" + destination + '\'' +
 	                ", busType='" + busType + '\'' +
 	                ", departureTime=" + departureTime +
 	                ", arrivalTime=" + arrivalTime +
-	                ", totalSeats=" + totalSeats +
-	                '}';
+	                ", totalSeats=" + totalSeats 
+	                ;
 	    }
+
+
+	
+	public void bookSeat(int seatNumber) {
+		// TODO Auto-generated method stub
+		seatMap[seatNumber - 1] = 1;
+	}
+
+
 }

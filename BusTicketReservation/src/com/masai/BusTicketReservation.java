@@ -3,21 +3,25 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
-
+import com.masai.entities.User;
 import com.masai.entities.Bus;
 import com.masai.utility.Admin;
-
+import com.masai.entities.*;
 public class BusTicketReservation {
 
     private static List<Bus> buses = new ArrayList<>();
-    
-//    private static Map<String, List<Booking>> bookingsByBusName = new HashMap<>();
-//    private static Map<String, List<Booking>> bookingsByUserName = new HashMap<>();
+    private static List<User> users = new ArrayList<>();
+    private static List<Bookings> bookingList = new ArrayList<>();
 
+   
     public static void main(String[] args) {
+    	buses.add(new Bus("b1", "pune", "nagpur", "Ac",
+                new Date(2023, 11, 3), new Date(2023, 11, 4), 30));
+    	
+    	users.add(new User("User","User","User","User"));
+    	
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to the Bus Reservation System");
         System.out.println("-------------------------------------");
@@ -65,11 +69,12 @@ public class BusTicketReservation {
                  System.out.println("2. Update bus");
                  System.out.println("3. Delete bus");
                  System.out.println("4. View all bookings");
-                 System.out.println("5. View bookings for a date range");
-                 System.out.println("6. View bookings by bus name");
-                 System.out.println("7. View bookings by user name");
-                 System.out.println("8. Exit to main Menu");
-                 System.out.println("9. Exit from application");
+                 System.out.println("5. View all users");
+                 System.out.println("6. View bookings for a date range");
+                 System.out.println("7. View bookings by bus name");
+                 System.out.println("8. View bookings by user name");
+                 System.out.println("9. logout to main Menu");
+                 System.out.println("0. Exit");
                  int option = Integer.parseInt(scanner.nextLine());
                  switch (option) {
                      case 1:
@@ -85,20 +90,23 @@ public class BusTicketReservation {
 //                         viewAllBookings();
                          break;
                      case 5:
-//                         viewBookingsForDateRange(scanner);
+                         viewAllUsers();
                          break;
                      case 6:
-//                         viewBookingsByBusName(scanner);
+//                        viewBookingsForDateRange(scanner);
                          break;
                      case 7:
-//                         viewBookingsByUserName(scanner);
+//                        viewBookingsByBusName(scanner);
                          break;
                      case 8:
-                    	 main(null);
+//                    	 viewBookingsByUserName(scanner);
                          break;
                      case 9:
+                    	 main(null);
+                         break;
+                     case 0:
                          System.exit(0);
-                         break;    
+                         break; 
                      default:
                          System.out.println("Invalid option. Try again.");
                  }
@@ -108,7 +116,19 @@ public class BusTicketReservation {
     }
     
         
-    	private static void updateBus(Scanner scanner) {
+    	private static void viewAllUsers() {
+	// TODO Auto-generated method stub
+    		if(users.toString()=="[]") {
+    			System.out.println("No user Found");
+    		}
+    		else {
+    			System.out.println(users.toString());
+    		}
+    		
+}
+
+
+		private static void updateBus(Scanner scanner) {
     		// TODO Auto-generated method stub
     			System.out.println("Enter bus name:");
     			String busName = scanner.nextLine();
@@ -172,8 +192,7 @@ public class BusTicketReservation {
     	        int totalSeats = Integer.parseInt(scanner.nextLine());
     	        Bus bus = new Bus(busName, source, destination, busType, departureTime, arrivalTime, totalSeats);
     	        buses.add(bus);
-//    	        System.out.println(bus.getBusName());
-//    	        busList.put(busName, (ArrayList<Bus>) buses);
+
     	        System.out.println(buses);
 
     	        System.out.println("Bus added.");
@@ -202,16 +221,16 @@ public class BusTicketReservation {
        		System.out.println("Enter an option:");
             System.out.println("1. Sign in");
             System.out.println("2. Sign up");
-       
+            System.out.println("0. Exit");
                 int option = Integer.parseInt(scanner.nextLine());
                 switch (option) {
                     case 1:
                         signInUser(scanner);
                         break;
                     case 2:
-//                        SignUpUser(scanner);
+                        SignUpUser(scanner);
                         break;
-                    case 8:
+                    case 0:
                         System.exit(0);
                         break;
                     default:
@@ -219,22 +238,63 @@ public class BusTicketReservation {
                 		}
             		}
         		}
-          
- 
-        private static void signInUser(Scanner scanner){
-       	 while (true) {
+       public static User findUser(String username, String password) {
+            for (User user : users) {
+                if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                    return user;
+                }
+            }
+            return null;
+        }
+      
+        private static void SignUpUser(Scanner scanner) {
+		// TODO Auto-generated method stub
+        	 System.out.print("Enter username: ");
+             String username = scanner.nextLine();
+
+             // Check if user name already exists
+             User existingUser =findUser(username, "");
+             while (existingUser != null) {
+                 System.out.println("Username already exists. Please try again.");
+                 System.out.print("Enter username: ");
+                 username = scanner.nextLine();
+                 existingUser = findUser(username, "");
+             }
+
+             System.out.println("Enter password: ");
+             String password = scanner.nextLine();
+             System.out.println("Enter Email Id: ");
+             String emailId = scanner.nextLine();
+             System.out.println("Enter mobile number: ");
+             String mobileNo = scanner.nextLine();
+             
+             
+             System.out.println("Sign up Successfully");
+             User newUser = new User(username, password,mobileNo,emailId);
+             users.add(newUser);
+             
+	}
+
+
+		private static void signInUser(Scanner scanner){
+       	 
                 System.out.println("Enter username:");
                 String username = scanner.nextLine();
                 System.out.println("Enter password:");
                 String password = scanner.nextLine();
-                if (username.equals(Admin.USERNAME) && password.equals(Admin.PASSWORD)) {
-                    break;
+   
+
+                User user = findUser(username, password);
+
+                if (user != null) {
+                    System.out.println("Login successful");
+                } else {
+                    System.out.println("Login failed");
+                    System.out.println("Invalid username or password. Try again.");
+                    
                 }
-                System.out.println("Invalid username or password. Try again.");
-            }
-            System.out.println("Login successful.");
-            System.out.println("Welcome "+Admin.USERNAME);
-            
+               
+    
             while (true) {
                 System.out.println("Enter an option:");
                 System.out.println("1. Book a seat");
@@ -244,7 +304,8 @@ public class BusTicketReservation {
                 System.out.println("5. Booking History");
                 System.out.println("6. Change Profile");
                 System.out.println("7. Delete Account");
-                System.out.println("8. Exit");
+                System.out.println("8. logout to Main Menu");
+                System.out.println("9. Exit");
                 int option = Integer.parseInt(scanner.nextLine());
                 switch (option) {
                     case 1:
@@ -269,6 +330,9 @@ public class BusTicketReservation {
                         deleteAcc(scanner);
                         break;
                     case 8:
+                        main(null);
+                        break;
+                    case 9:
                         System.exit(0);
                         break;
                     default:
@@ -283,17 +347,11 @@ public class BusTicketReservation {
 
 private static void listBus(Scanner scanner) {
 			// TODO Auto-generated method stub
-	 for(int i=0;i<buses.size();i++){
-		 if(buses==null){
-			 System.out.println("No Bus Found");
-		 }
-		 else {
-			 System.out.println(buses.get(i));
-		 }
-		 
+	System.out.println("Available buses:");
+    for (int i = 0; i < buses.size(); i++) {
+        System.out.println(i + 1 + ". " + buses.get(i));
+    }
 	 }
-	 
-		}
 
 
 private static void deleteAcc(Scanner scanner) {
@@ -322,16 +380,94 @@ private static void searchBus(Scanner scanner) {
 
 private static void ViewAvailableSeats(Scanner scanner) {
 			// TODO Auto-generated method stub
-	System.out.println("available Seats");
+	
+	
 		}
 
 
 private static void bookSeat(Scanner scanner) {
 			// TODO Auto-generated method stub
-	System.out.println("Seat booked");
-			
-		}
+if(buses.size()==0) {
+	System.out.println("No Bus Found");
+	signInUser(scanner);
+}
+    // Display list of available buses
+    System.out.println("Available buses:");
+    for (int i = 0; i < buses.size(); i++) {
+        Bus bus = buses.get(i);
+        System.out.println(i + 1 + ". " + bus.getSource() + " to " + bus.getDestination() + " (" + bus.getDepartureTime() + ")");
+    }
 
+    // Ask user to select a bus
+    System.out.print("Select a bus (1-" + buses.size() + "): ");
+    int busIndex = scanner.nextInt() - 1;
+    while (busIndex < 0 || busIndex >= buses.size()) {
+        System.out.print("Invalid input. Please select a bus (1-" + buses.size() + "): ");
+        busIndex = scanner.nextInt() - 1;
+    }
+
+    // Display seat map for selected bus
+    Bus selectedBus = buses.get(busIndex);
+    int[] seatMap = selectedBus.getSeatMap();
+    System.out.println("Seat map for " + selectedBus.getSource() + " to " + selectedBus.getDestination() + " (" + selectedBus.getDepartureTime() + "):");
+    for (int i = 0; i < seatMap.length; i++) {
+        if (i % 5 == 0) {
+            System.out.println();
+        }
+        if (i < 9) {
+            System.out.print(" ");
+        }
+        if (seatMap[i] == 1) {
+            System.out.print("X");
+        } else {
+            System.out.print(i + 1);
+        }
+        System.out.print(" ");
+    }
+    System.out.println();
+
+    // Ask user to select a seat
+    System.out.print("Select a seat (1-" + seatMap.length + "): ");
+    int seatNumber = scanner.nextInt();
+    while (seatNumber < 1 || seatNumber > seatMap.length || seatMap[seatNumber - 1] == 1) {
+        if (seatMap[seatNumber - 1] == 1) {
+            System.out.print("Seat " + seatNumber + " is already booked. Please select another seat: ");
+        } else {
+            System.out.print("Invalid input. Please select a seat (1-" + seatMap.length + "): ");
+        }
+        seatNumber = scanner.nextInt();
+    }
+
+    // Book the selected seat and update the seat map
+    selectedBus.bookSeat(seatNumber);
+    seatMap[seatNumber - 1] = 1;
+
+    // Add booking information to the booking list
+    Bookings booking = new Bookings(selectedBus.getBusName(), selectedBus.getDestination(), seatNumber, selectedBus.getDepartureTime());
+    bookingList.add(booking);
+
+    System.out.println("Booking successful. Your seat number is " + seatNumber + "."+ "of Bus :"+selectedBus.getBusName() +"on "+selectedBus.getDepartureTime() );		
+    System.out.println("------Thank You For Using Bus Safar--------");
+    System.out.println("                        ");
+    
+    while (true) {
+   		System.out.println("Enter an option:");
+   		System.out.println("Enter 1 for main menu");
+   	    System.out.println("Enter 0 for Exit");
+   	    
+            int optio = scanner.nextInt();
+            switch (optio) {
+                case 1:
+                    signInUser(scanner);
+                    break;
+                case 0:
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Invalid option. Try again.");
+            		}
+        		}
+}
 
 //	private static void deleteBus(Scanner scanner) {
 //        System.out.println("Enter bus name:");
@@ -348,10 +484,5 @@ private static void bookSeat(Scanner scanner) {
 
 
 
-
-
-
-    
-   
 	
 }
