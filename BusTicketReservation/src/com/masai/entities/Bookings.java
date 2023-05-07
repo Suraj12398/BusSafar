@@ -1,18 +1,24 @@
 package com.masai.entities;
 
 import java.util.Date;
+import java.util.UUID;
+
+
 
 public class Bookings {
-	 private String userName;
-	    private String busName;
+		private  String userName;
+		private String busName;
+	    private String destination;
 	    private int numSeats;
 	    private Date departureTime;
+	    private String id;
 
-	    public Bookings(String userName, String busName, int numSeats, Date departureTime) {
+	    public Bookings(String userName, String busName,String destination, int numSeats, Date departureTime) {
 	        this.userName = userName;
 	        this.busName = busName;
 	        this.numSeats = numSeats;
 	        this.departureTime = departureTime;
+	        this.id =UUID.randomUUID().toString().substring(0, 6).toUpperCase();
 	    }
 
 		public String getUserName() {
@@ -46,14 +52,26 @@ public class Bookings {
 		public void setDepartureTime(Date departureTime) {
 			this.departureTime = departureTime;
 		}
-	    
+		public String getId() {
+	        return id;
+	    }
 		public String toString() {
 	        return "Booking{" +
-	                "userName='" + userName + '\'' +
-	                ", busName='" + busName + '\'' +
-	                ", numSeats=" + numSeats +
-	                ", departureTime=" + departureTime +
+	        		
+	                "Id='" + id + '\'' +
+	                ", Username=' " + userName + '\'' +
+	                ", busname=' " + busName + '\'' +
+	                ", Seat No.= " + numSeats +
+	                ", Departure Time= " + departureTime +
 	                '}';
 }
+
+		public String getDestination() {
+			return destination;
+		}
+
+		public void setDestination(String destination) {
+			this.destination = destination;
+		}
 
 }

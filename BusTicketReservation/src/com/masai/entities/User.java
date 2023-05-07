@@ -36,6 +36,14 @@ public class User{
 		this.password = password;
 	}
 
+	public String getMobileNo() {
+		return mobileNo;
+	}
+
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+
 	public String getAddress() {
 		return mobileNo;
 	}

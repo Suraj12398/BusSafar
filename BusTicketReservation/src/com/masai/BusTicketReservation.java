@@ -115,11 +115,12 @@ public class BusTicketReservation {
        
     }
     
-        public void viewBookingsByUserName(Scanner scanner) {
+        public static void viewBookingsByUserName(Scanner scanner) {
             System.out.println("Enter the user name:");
             String userName = scanner.next();
 
             List<Bookings> bookings = new ArrayList<>();
+            
             for (Bookings booking : bookingList) {
                 if (booking.getUserName().equals(userName)) {
                     bookings.add(booking);
@@ -135,6 +136,7 @@ public class BusTicketReservation {
                 }
             }
         }
+        
 
         public static void viewBookingsByBusName(Scanner scanner) {
             System.out.print("Enter bus name: ");
@@ -151,11 +153,12 @@ public class BusTicketReservation {
         
     	private static void viewBookingsForDateRange(Scanner scanner) {
 			// TODO Auto-generated method stub
-    		 System.out.println("Enter start date (in dd/MM/yyyy format): ");
-    		    Date startDate = getDateFromUserInput(scanner);
+    		 System.out.println("Enter start date (in dd-MM-yyyy HH:mm format): ");
+    		 
+    		    Date startDate = parseDate(scanner.nextLine());
 
-    		    System.out.println("Enter end date (in dd/MM/yyyy format): ");
-    		    Date endDate = getDateFromUserInput(scanner);
+    		    System.out.println("Enter end date (in dd-MM-yyyy HH:mm format): ");
+    		    Date endDate =  parseDate(scanner.nextLine());
 
     		    List<Bookings> bookingsInRange = new ArrayList<>();
 
@@ -174,19 +177,8 @@ public class BusTicketReservation {
     		        }
     		    }
 		}
-    	private static Date getDateFromUserInput(Scanner scanner) {
-    	    while (true) {
-    	        try {
-    	            String input = scanner.nextLine();
-    	            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    	            dateFormat.setLenient(false);
-    	            Date date = dateFormat.parse(input);
-    	            return date;
-    	        } catch (ParseException e) {
-    	            System.out.println("Invalid date format. Please enter a date in dd/MM/yyyy format.");
-    	        }
-    	    }
-    	}
+    	
+
 
 		private static void viewAllBookings() {
 	// TODO Auto-generated method stub
@@ -304,11 +296,11 @@ public class BusTicketReservation {
 
     		
     		
-    		private static Date parseDate(String dateString) {
+    		private static Date parseDate(String scanner) {
     			
     			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     		    try {
-    		        return dateFormat.parse(dateString);
+    		        return dateFormat.parse(scanner);
     		    } catch (ParseException e) {
     		        System.out.println("Invalid date format. Please use format yyyy-MM-dd HH:mm");
     		        return null;
@@ -381,7 +373,7 @@ public class BusTicketReservation {
 
 
 		private static void signInUser(Scanner scanner){
-			
+			while(true) {
                 System.out.println("Enter username:");
                 String username = scanner.nextLine();
                 System.out.println("Enter password:");
@@ -392,9 +384,11 @@ public class BusTicketReservation {
 
                 if (user != null) {
                     System.out.println("Login successful");
+                    Session.setCurrentUser(user);
                 } else {
                     System.out.println("Login failed");
                     System.out.println("Invalid username or password. Try again.");
+                    signInUser(scanner);
                 } 
 		
 			
@@ -419,16 +413,16 @@ public class BusTicketReservation {
                     	bookSeat(scanner);
                         break;
                     case 3:
-//                        searchBus(scanner);
+                        searchBus(scanner);
                         break;
                     case 4:
-//                        BookingHistory();
+                        BookingHistory(scanner);
                         break;
                     case 5:
-//                        changeProfile(scanner);
+                        changeProfile(scanner);
                         break;
                     case 6:
-//                        deleteAcc(scanner);
+                        deleteAcc(scanner);
                         break;
                     case 7:
                         main(null);
@@ -441,11 +435,98 @@ public class BusTicketReservation {
                 }
             
             }
+            }
 			}
 		
 
    
 
+
+private static void deleteAcc(Scanner scanner) {
+			// TODO Auto-generated method stub
+	if (Session.getCurrentUser() == null) {
+        System.out.println("You must be logged in to delete your account.");
+        return;
+    }
+    
+    // Prompt the user to confirm that they want to delete their account.
+    System.out.println("Are you sure you want to delete your account? (y/n)");
+    String confirmation = scanner.nextLine().trim().toLowerCase();
+    if (!confirmation.equals("y")) {
+        System.out.println("Account deletion cancelled.");
+        return;
+    }
+    
+    // Delete all data related to the user from your system.
+    String username = Session.getCurrentUser().getUsername();
+    // TODO: Delete user data from your storage system.
+    users.remove(Session.getCurrentUser());
+    // Log the user out and invalidate their session.
+    Session.setCurrentUser(null);
+    System.out.println("Account deleted successfully."+ username);
+    main(null);
+		}
+
+
+private static void changeProfile(Scanner scanner) {
+			// TODO Auto-generated method stub
+	User currentUser = Session.getCurrentUser();
+	String userName=currentUser.getUsername();
+	
+	for (int i = 0; i < users.size(); i++) {
+    	if(userName.equals(users.get(i).getUsername()) ) {
+    		System.out.println("Enter Current your Password ");
+    		String password1=scanner.nextLine();
+    		
+    		if(users.get(i).getPassword().equals(password1)) {
+    		 System.out.println("Enter password to be Changed: ");
+             String password = scanner.nextLine();
+             System.out.println("Enter Email Id to be Changed: ");
+             String emailId = scanner.nextLine();
+             System.out.println("Enter mobile number to be Changed: ");
+             String mobileNo = scanner.nextLine();
+    		
+    		users.get(i).setPassword(password);
+    		users.get(i).setEmail(emailId);
+    		users.get(i).setMobileNo(mobileNo);
+    		}
+    }
+    	else {
+    		System.out.println("No user Found "+currentUser);
+    	}
+		}
+		}
+
+
+private static void BookingHistory(Scanner scanner) {
+			// TODO Auto-generated method stub
+	System.out.println("Enter the User Name:");
+	String userName = scanner.nextLine();
+	
+    for (int i = 0; i < bookingList.size(); i++) {
+    	if(userName.equals(bookingList.get(i).getUserName()) ) {
+        System.out.println(i + 1 + ". " + bookingList.get(i));
+    }
+    	else {
+    		System.out.println("No booking Found for "+userName);
+    	}
+		}
+		}
+
+
+private static void searchBus(Scanner scanner) {
+			// TODO Auto-generated method stub
+	System.out.println("Enter the City Name you want to Travel:");
+	String cityName = scanner.nextLine();
+    for (int i = 0; i < buses.size(); i++) {
+    	if(cityName.equals(buses.get(i).getDestination()) ) {
+        System.out.println(i + 1 + ". " + buses.get(i));
+    }
+    	else {
+    		System.out.println("No bus Found for "+cityName);
+    	}
+		}
+}
 
 private static void listBus(Scanner scanner) {
 			// TODO Auto-generated method stub
@@ -463,6 +544,8 @@ private static void listBus(Scanner scanner) {
 
 private static void bookSeat(Scanner scanner) {
 			// TODO Auto-generated method stub
+	 System.out.println("Enter you Username for confirmation");
+	    String username=scanner.nextLine();
 if(buses.size()==0) {
 	System.out.println("No Bus Found");
 	signInUser(scanner);
@@ -473,10 +556,13 @@ if(buses.size()==0) {
         Bus bus = buses.get(i);
         System.out.println(i + 1 + ". " + bus.getSource() + " to " + bus.getDestination() + " (" + bus.getDepartureTime() + ")");
     }
-
+    
     // Ask user to select a bus
     System.out.print("Select a bus (1-" + buses.size() + "): ");
     int busIndex = scanner.nextInt() - 1;
+   
+    
+    
     while (busIndex < 0 || busIndex >= buses.size()) {
         System.out.print("Invalid input. Please select a bus (1-" + buses.size() + "): ");
         busIndex = scanner.nextInt() - 1;
@@ -484,6 +570,7 @@ if(buses.size()==0) {
 
     // Display seat map for selected bus
     Bus selectedBus = buses.get(busIndex);
+    
     int[] seatMap = selectedBus.getSeatMap();
     System.out.println("Seat map for " + selectedBus.getSource() + " to " + selectedBus.getDestination() + " (" + selectedBus.getDepartureTime() + "):");
     for (int i = 0; i < seatMap.length; i++) {
@@ -501,10 +588,11 @@ if(buses.size()==0) {
         System.out.print(" ");
     }
     System.out.println();
-
+    
     // Ask user to select a seat
     System.out.print("Select a seat (1-" + seatMap.length + "): ");
     int seatNumber = scanner.nextInt();
+    
     while (seatNumber < 1 || seatNumber > seatMap.length || seatMap[seatNumber - 1] == 1) {
         if (seatMap[seatNumber - 1] == 1) {
             System.out.print("Seat " + seatNumber + " is already booked. Please select another seat: ");
@@ -512,16 +600,22 @@ if(buses.size()==0) {
             System.out.print("Invalid input. Please select a seat (1-" + seatMap.length + "): ");
         }
         seatNumber = scanner.nextInt();
+        
+       
     }
-
+    
     // Book the selected seat and update the seat map
     selectedBus.bookSeat(seatNumber);
     seatMap[seatNumber - 1] = 1;
-
+   
     // Add booking information to the booking list
-    Bookings booking = new Bookings(selectedBus.getBusName(), selectedBus.getDestination(), seatNumber, selectedBus.getDepartureTime());
+    Bookings booking = new Bookings(username,selectedBus.getBusName(), selectedBus.getDestination(), seatNumber, selectedBus.getDepartureTime());
     bookingList.add(booking);
-
+    
+   
+   
+    
+    
     System.out.println("Booking successful. Your seat number is " + seatNumber + "."+ "of Bus :"+selectedBus.getBusName() +"on "+selectedBus.getDepartureTime() );		
     System.out.println("------Thank You For Using Bus Safar--------");
     System.out.println("                        ");
