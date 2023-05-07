@@ -1,8 +1,9 @@
 package com.masai.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Bus {
+public class Bus implements Serializable{
 	private String busName;
     private String source;
     private String destination;

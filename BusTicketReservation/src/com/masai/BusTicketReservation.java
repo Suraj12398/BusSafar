@@ -1,4 +1,6 @@
 package com.masai;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,43 +10,66 @@ import java.util.Scanner;
 import com.masai.entities.User;
 import com.masai.entities.Bus;
 import com.masai.utility.Admin;
+import com.masai.utility.FileExists;
 import com.masai.entities.*;
+
 public class BusTicketReservation {
 
-    private static List<Bus> buses = new ArrayList<>();
-    private static List<User> users = new ArrayList<>();
-    private static List<Bookings> bookingList = new ArrayList<>();
+    private static List<Bus> buses = FileExists.busesFile();
+    private static List<User> users = FileExists.usersFile();
+    private static List<Bookings> bookingList = FileExists.bookingListFile();
 
    
     public static void main(String[] args) {
-    	buses.add(new Bus("b1", "pune", "nagpur", "Ac",
-                new Date(2023, 11, 3), new Date(2023, 11, 4), 30));
-    	
-    	users.add(new User("User","User","User","User"));
+//    	buses.add(new Bus("b1", "pune", "nagpur", "Ac",
+//                new Date(2023, 11, 3), new Date(2023, 11, 4), 30));
+//    	
+//    	users.add(new User("User","User","User","User"));
     	
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to the Bus Safar Reservation System");
         System.out.println("--------------------------------------------");
-        while (true) {
-            System.out.println("Select user type:");
-            System.out.println("1. Admin");
-            System.out.println("2. Passenger");
-            System.out.println("3. Exit");
-            int opt = Integer.parseInt(scanner.nextLine());
-            switch (opt) {
-                case 1:
-                    admin(scanner);
-                    break;
-                case 2:
-                    user(scanner);
-                    break;
-                case 3:
-                    System.out.println("Thank you for using the Bus Safar");
-                    System.exit(0);
-                default:
-                    System.out.println("Invalid choice, please try again.");
+        try {
+        	while (true) {
+                System.out.println("Select user type:");
+                System.out.println("1. Admin");
+                System.out.println("2. Passenger");
+                System.out.println("3. Exit");
+                int opt = Integer.parseInt(scanner.nextLine());
+                switch (opt) {
+                    case 1:
+                        admin(scanner);
+                        break;
+                    case 2:
+                        user(scanner);
+                        break;
+                    case 3:
+                        System.out.println("Thank you for using the Bus Safar");
+                        System.exit(0);
+                    default:
+                        System.out.println("Invalid choice, please try again.");
+                }
             }
-        }
+        }catch (Exception e) {
+
+			System.out.println(e.getMessage());
+		} finally {
+			// serialization (finally always executed)
+			try {
+				ObjectOutputStream poos = new ObjectOutputStream(new FileOutputStream("Buses.ser"));
+				poos.writeObject(buses);
+				ObjectOutputStream coos = new ObjectOutputStream(new FileOutputStream("Users.ser"));
+				coos.writeObject(users);
+
+				ObjectOutputStream toos = new ObjectOutputStream(new FileOutputStream("Booking.ser"));
+				toos.writeObject(bookingList);
+			//	System.out.println("serialized..........");
+			} catch (Exception e) {
+				// TODO: handle exception
+				System.out.println(e.getMessage());
+			}
+		}
+        
         
     }
     
@@ -52,6 +77,7 @@ public class BusTicketReservation {
 //   ===================================admin=====================================================
     
         private static void admin(Scanner scanner){
+        	try {
         	 while (true) {
                  System.out.println("Enter username:");
                  String username = scanner.nextLine();
@@ -62,6 +88,7 @@ public class BusTicketReservation {
                  }
                  System.out.println("Invalid username or password. Try again.");
              }
+        	 System.out.println("**********Welcome Admin**********");
              System.out.println("Login successful.");
              while (true) {
                  System.out.println("Enter an option:");
@@ -112,6 +139,25 @@ public class BusTicketReservation {
                  }
              
         }
+        	}catch (Exception e) {
+
+    			System.out.println(e.getMessage());
+    		} finally {
+    			// serialization (finally always executed)
+    			try {
+    				ObjectOutputStream poos = new ObjectOutputStream(new FileOutputStream("Buses.ser"));
+    				poos.writeObject(buses);
+    				ObjectOutputStream coos = new ObjectOutputStream(new FileOutputStream("Users.ser"));
+    				coos.writeObject(users);
+
+    				ObjectOutputStream toos = new ObjectOutputStream(new FileOutputStream("Booking.ser"));
+    				toos.writeObject(bookingList);
+    			//	System.out.println("serialized..........");
+    			} catch (Exception e) {
+    				// TODO: handle exception
+    				System.out.println(e.getMessage());
+    			}
+    		}
        
     }
     
@@ -193,6 +239,7 @@ public class BusTicketReservation {
 
 
 		private static void deleteBus(Scanner scanner) {
+			try{
    		 System.out.print("Enter bus name: ");
    		    String busName = scanner.nextLine();
 
@@ -211,6 +258,25 @@ public class BusTicketReservation {
    		    if (!busFound) {
    		        System.out.println("Bus " + busName + " not found.");
    		    }
+   		    }catch (Exception e) {
+
+   				System.out.println(e.getMessage());
+   			} finally {
+   				// serialization (finally always executed)
+   				try {
+   					ObjectOutputStream poos = new ObjectOutputStream(new FileOutputStream("Buses.ser"));
+   					poos.writeObject(buses);
+   					ObjectOutputStream coos = new ObjectOutputStream(new FileOutputStream("Users.ser"));
+   					coos.writeObject(users);
+
+   					ObjectOutputStream toos = new ObjectOutputStream(new FileOutputStream("Booking.ser"));
+   					toos.writeObject(bookingList);
+   				//	System.out.println("serialized..........");
+   				} catch (Exception e) {
+   					// TODO: handle exception
+   					System.out.println(e.getMessage());
+   				}
+   			}
        }
     	private static void viewAllUsers() {
 	// TODO Auto-generated method stub
@@ -226,6 +292,7 @@ public class BusTicketReservation {
 
 		private static void updateBus(Scanner scanner) {
     		// TODO Auto-generated method stub
+			try {
     			System.out.println("Enter bus name:");
     			String busName = scanner.nextLine();
     			Bus bus = findBusByName(busName);
@@ -250,7 +317,26 @@ public class BusTicketReservation {
     			bus.setTotalSeats(newTotalSeats);
     			}
     			System.out.println("Bus updated.");
-    	}
+    	}catch (Exception e) {
+
+			System.out.println(e.getMessage());
+		} finally {
+			// serialization (finally always executed)
+			try {
+				ObjectOutputStream poos = new ObjectOutputStream(new FileOutputStream("Buses.ser"));
+				poos.writeObject(buses);
+				ObjectOutputStream coos = new ObjectOutputStream(new FileOutputStream("Users.ser"));
+				coos.writeObject(users);
+
+				ObjectOutputStream toos = new ObjectOutputStream(new FileOutputStream("Booking.ser"));
+				toos.writeObject(bookingList);
+			//	System.out.println("serialized..........");
+			} catch (Exception e) {
+				// TODO: handle exception
+				System.out.println(e.getMessage());
+			}
+		}
+		}
 
 
     		
@@ -266,6 +352,7 @@ public class BusTicketReservation {
 
 
     		private static void addBus(Scanner scanner) {
+    			try {
     	        System.out.println("Enter bus name:");
     	        String busName = scanner.nextLine();
     	        
@@ -292,6 +379,25 @@ public class BusTicketReservation {
     	        System.out.println(buses);
 
     	        System.out.println("Bus added.");
+    			}catch (Exception e) {
+
+    				System.out.println(e.getMessage());
+    			} finally {
+    				// serialization (finally always executed)
+    				try {
+    					ObjectOutputStream poos = new ObjectOutputStream(new FileOutputStream("Buses.ser"));
+    					poos.writeObject(buses);
+    					ObjectOutputStream coos = new ObjectOutputStream(new FileOutputStream("Users.ser"));
+    					coos.writeObject(users);
+
+    					ObjectOutputStream toos = new ObjectOutputStream(new FileOutputStream("Booking.ser"));
+    					toos.writeObject(bookingList);
+    				//	System.out.println("serialized..........");
+    				} catch (Exception e) {
+    					// TODO: handle exception
+    					System.out.println(e.getMessage());
+    				}
+    			}
     	    }
 
     		
@@ -313,6 +419,7 @@ public class BusTicketReservation {
         
  // user Sign in Sign out
         private static void user(Scanner scanner){
+        	try {
        	 while (true) {
        		System.out.println("Enter an option:");
             System.out.println("1. Sign in");
@@ -333,6 +440,25 @@ public class BusTicketReservation {
                         System.out.println("Invalid option. Try again.");
                 		}
             		}
+        	}catch (Exception e) {
+
+    			System.out.println(e.getMessage());
+    		} finally {
+    			// serialization (finally always executed)
+    			try {
+    				ObjectOutputStream poos = new ObjectOutputStream(new FileOutputStream("Buses.ser"));
+    				poos.writeObject(buses);
+    				ObjectOutputStream coos = new ObjectOutputStream(new FileOutputStream("Users.ser"));
+    				coos.writeObject(users);
+
+    				ObjectOutputStream toos = new ObjectOutputStream(new FileOutputStream("Booking.ser"));
+    				toos.writeObject(bookingList);
+    			//	System.out.println("serialized..........");
+    			} catch (Exception e) {
+    				// TODO: handle exception
+    				System.out.println(e.getMessage());
+    			}
+    		}
         		}
        public static User findUser(String username, String password) {
             for (User user : users) {
@@ -345,6 +471,7 @@ public class BusTicketReservation {
       
         private static void SignUpUser(Scanner scanner) {
 		// TODO Auto-generated method stub
+        	try {
         	 System.out.print("Enter username: ");
              String username = scanner.nextLine();
 
@@ -369,10 +496,30 @@ public class BusTicketReservation {
              User newUser = new User(username, password,mobileNo,emailId);
              users.add(newUser);
              
+	}catch (Exception e) {
+
+		System.out.println(e.getMessage());
+	} finally {
+		// serialization (finally always executed)
+		try {
+			ObjectOutputStream poos = new ObjectOutputStream(new FileOutputStream("Buses.ser"));
+			poos.writeObject(buses);
+			ObjectOutputStream coos = new ObjectOutputStream(new FileOutputStream("Users.ser"));
+			coos.writeObject(users);
+
+			ObjectOutputStream toos = new ObjectOutputStream(new FileOutputStream("Booking.ser"));
+			toos.writeObject(bookingList);
+		//	System.out.println("serialized..........");
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+		}
 	}
+        }
 
 
 		private static void signInUser(Scanner scanner){
+			try {
 			while(true) {
                 System.out.println("Enter username:");
                 String username = scanner.nextLine();
@@ -436,6 +583,25 @@ public class BusTicketReservation {
             
             }
             }
+			}catch (Exception e) {
+
+				System.out.println(e.getMessage());
+			} finally {
+				// serialization (finally always executed)
+				try {
+					ObjectOutputStream poos = new ObjectOutputStream(new FileOutputStream("Buses.ser"));
+					poos.writeObject(buses);
+					ObjectOutputStream coos = new ObjectOutputStream(new FileOutputStream("Users.ser"));
+					coos.writeObject(users);
+
+					ObjectOutputStream toos = new ObjectOutputStream(new FileOutputStream("Booking.ser"));
+					toos.writeObject(bookingList);
+				//	System.out.println("serialized..........");
+				} catch (Exception e) {
+					// TODO: handle exception
+					System.out.println(e.getMessage());
+				}
+			}
 			}
 		
 
@@ -444,6 +610,7 @@ public class BusTicketReservation {
 
 private static void deleteAcc(Scanner scanner) {
 			// TODO Auto-generated method stub
+	try {
 	if (Session.getCurrentUser() == null) {
         System.out.println("You must be logged in to delete your account.");
         return;
@@ -465,11 +632,31 @@ private static void deleteAcc(Scanner scanner) {
     Session.setCurrentUser(null);
     System.out.println("Account deleted successfully."+ username);
     main(null);
+		}catch (Exception e) {
+
+			System.out.println(e.getMessage());
+		} finally {
+			// serialization (finally always executed)
+			try {
+				ObjectOutputStream poos = new ObjectOutputStream(new FileOutputStream("Buses.ser"));
+				poos.writeObject(buses);
+				ObjectOutputStream coos = new ObjectOutputStream(new FileOutputStream("Users.ser"));
+				coos.writeObject(users);
+
+				ObjectOutputStream toos = new ObjectOutputStream(new FileOutputStream("Booking.ser"));
+				toos.writeObject(bookingList);
+			//	System.out.println("serialized..........");
+			} catch (Exception e) {
+				// TODO: handle exception
+				System.out.println(e.getMessage());
+			}
 		}
+}
 
 
 private static void changeProfile(Scanner scanner) {
 			// TODO Auto-generated method stub
+	try {
 	User currentUser = Session.getCurrentUser();
 	String userName=currentUser.getUsername();
 	
@@ -495,6 +682,25 @@ private static void changeProfile(Scanner scanner) {
     		System.out.println("No user Found "+currentUser);
     	}
 		}
+	}catch (Exception e) {
+
+		System.out.println(e.getMessage());
+	} finally {
+		// serialization (finally always executed)
+		try {
+			ObjectOutputStream poos = new ObjectOutputStream(new FileOutputStream("Buses.ser"));
+			poos.writeObject(buses);
+			ObjectOutputStream coos = new ObjectOutputStream(new FileOutputStream("Users.ser"));
+			coos.writeObject(users);
+
+			ObjectOutputStream toos = new ObjectOutputStream(new FileOutputStream("Booking.ser"));
+			toos.writeObject(bookingList);
+		//	System.out.println("serialized..........");
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+		}
+	}
 		}
 
 
@@ -543,6 +749,7 @@ private static void listBus(Scanner scanner) {
 
 
 private static void bookSeat(Scanner scanner) {
+	try {
 			// TODO Auto-generated method stub
 	 System.out.println("Enter you Username for confirmation");
 	    String username=scanner.nextLine();
@@ -637,6 +844,25 @@ if(buses.size()==0) {
                     System.out.println("Invalid option. Try again.");
             		}
         		
+}catch (Exception e) {
+
+	System.out.println(e.getMessage());
+} finally {
+	// serialization (finally always executed)
+	try {
+		ObjectOutputStream poos = new ObjectOutputStream(new FileOutputStream("Buses.ser"));
+		poos.writeObject(buses);
+		ObjectOutputStream coos = new ObjectOutputStream(new FileOutputStream("Users.ser"));
+		coos.writeObject(users);
+
+		ObjectOutputStream toos = new ObjectOutputStream(new FileOutputStream("Booking.ser"));
+		toos.writeObject(bookingList);
+	//	System.out.println("serialized..........");
+	} catch (Exception e) {
+		// TODO: handle exception
+		System.out.println(e.getMessage());
+	}
+}
 }
 
 

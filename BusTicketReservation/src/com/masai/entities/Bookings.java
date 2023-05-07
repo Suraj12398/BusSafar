@@ -1,11 +1,12 @@
 package com.masai.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
 
 
-public class Bookings {
+public class Bookings implements Serializable{
 		private  String userName;
 		private String busName;
 	    private String destination;
