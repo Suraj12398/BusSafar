@@ -23,8 +23,8 @@
    <p>Delete Account<p/>
 
 #Concepts Used
-    <p>oops</p>
-    <p>Collection Framework</p>
-    <p>Searialization</p>
-    <p>exception handling</p>
-    <p>Deserialization</p>
+    oops
+    Collection Framework
+    Searialization
+    Exception handling
+    Deserialization
