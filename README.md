@@ -5,4 +5,28 @@
 
   Having Following Functionality
   ==============================
-  
+  <h1> Admin & Passenger Side<h1/>
+  <h2>Admin<h2/>
+  <p>Add Bus<p/>
+  <p>Update bus details<p/>
+  <p>Delete Bus<p/>
+  <p>View Users<p/>
+  <p>View Booking<p/>
+  <p>View Booking with User Name<p/>
+    <br>
+  <h2>Passenger<h2/>
+    <p>Sign up Sign in<p/>
+   <p>View All Buses<p/>
+   <p>Book Seat by seat number<p/>
+   <p>Search bus by city name<p/>
+   <p> Booking History<p/>
+   <p>Change Profile details<p/>
+   <p>Delete Account<p/>
+
+Concepts Used
+==============
+    <p>oops<p>
+    <p>Collection Framework<p/>
+    <p>Searialization<p>
+    <p>exception handling<p/>
+    <p>Deserialization<p/>
