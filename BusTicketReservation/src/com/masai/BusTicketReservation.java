@@ -27,13 +27,13 @@ public class BusTicketReservation {
 //    	users.add(new User("User","User","User","User"));
     	
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Welcome to the Bus Safar Reservation System");
+        System.out.println("😊Welcome to the Bus Safar Reservation System😊");
         System.out.println("--------------------------------------------");
         try {
         	while (true) {
-                System.out.println("Select user type:");
-                System.out.println("1. Admin");
-                System.out.println("2. Passenger");
+                System.out.println("Select user type👤:");
+                System.out.println("1. Admin👮🏻‍♀️");
+                System.out.println("2. Passenger👤");
                 System.out.println("3. Exit");
                 int opt = Integer.parseInt(scanner.nextLine());
                 switch (opt) {
@@ -44,7 +44,7 @@ public class BusTicketReservation {
                         user(scanner);
                         break;
                     case 3:
-                        System.out.println("Thank you for using the Bus Safar");
+                        System.out.println("😊Thank you for using the Bus Safar😊");
                         System.exit(0);
                     default:
                         System.out.println("Invalid choice, please try again.");
@@ -88,19 +88,19 @@ public class BusTicketReservation {
                  }
                  System.out.println("Invalid username or password. Try again.");
              }
-        	 System.out.println("**********Welcome Admin**********");
+        	 System.out.println("*****😊*****Welcome Admin*****😊*****");
              System.out.println("Login successful.");
              while (true) {
                  System.out.println("Enter an option:");
-                 System.out.println("1. Add bus");
-                 System.out.println("2. Update bus");
-                 System.out.println("3. Delete bus");
-                 System.out.println("4. View all bookings");
-                 System.out.println("5. View all users");
-                 System.out.println("6. View bookings for a date range");
+                 System.out.println("1. Add bus🚍");
+                 System.out.println("2. Update bus🚌");
+                 System.out.println("3. Delete bus🗑");
+                 System.out.println("4. View all bookings🗒️");
+                 System.out.println("5. View all users📖");
+                 System.out.println("6. View bookings for a date range📅");
                  System.out.println("7. View bookings by bus name");
                  System.out.println("8. View bookings by user name");
-                 System.out.println("9. logout to main Menu");
+                 System.out.println("9. logout to main Menu🔙");
                  System.out.println("0. Exit");
                  int option = Integer.parseInt(scanner.nextLine());
                  switch (option) {
@@ -229,7 +229,7 @@ public class BusTicketReservation {
 		private static void viewAllBookings() {
 	// TODO Auto-generated method stub
     		if(bookingList.toString()=="[]") {
-    			System.out.println("No user Found");
+    			System.out.println("No booking Found");
     		}
     		else {
     			System.out.println(bookingList.toString());
@@ -422,8 +422,8 @@ public class BusTicketReservation {
         	try {
        	 while (true) {
        		System.out.println("Enter an option:");
-            System.out.println("1. Sign in");
-            System.out.println("2. Sign up");
+            System.out.println("1. Sign in➡️");
+            System.out.println("2. Sign up↩️");
             System.out.println("0. Exit");
                 int option = Integer.parseInt(scanner.nextLine());
                 switch (option) {
@@ -492,7 +492,7 @@ public class BusTicketReservation {
              String mobileNo = scanner.nextLine();
              
              
-             System.out.println("Sign up Successfully");
+             System.out.println("Sign up Successfully✅");
              User newUser = new User(username, password,mobileNo,emailId);
              users.add(newUser);
              
@@ -530,11 +530,11 @@ public class BusTicketReservation {
                 User user = findUser(username, password);
 
                 if (user != null) {
-                    System.out.println("Login successful");
+                    System.out.println("Login successful✅");
                     Session.setCurrentUser(user);
                 } else {
-                    System.out.println("Login failed");
-                    System.out.println("Invalid username or password. Try again.");
+                    System.out.println("Login failed❗️");
+                    System.out.println("Invalid username or password. Try again.❗️");
                     signInUser(scanner);
                 } 
 		
@@ -543,13 +543,13 @@ public class BusTicketReservation {
     
             while (true) {
                 System.out.println("Enter an option:");
-                System.out.println("1. List of Bus Available");
-                System.out.println("2. Book a seat");
-                System.out.println("3. Search bus by city name");
-                System.out.println("4. Booking History");
-                System.out.println("5. Change Profile");
-                System.out.println("6. Delete Account");
-                System.out.println("7. logout to Main Menu");
+                System.out.println("1. List of Bus Available🚌");
+                System.out.println("2. Book a seat💺");
+                System.out.println("3. Search bus by city name🌇");
+                System.out.println("4. Booking History📜");
+                System.out.println("5. Change Profile👤");
+                System.out.println("6. Delete Account🗑️");
+                System.out.println("7. logout to Main Menu🔙");
                 System.out.println("8. Exit");
                 int option = Integer.parseInt(scanner.nextLine());
                 switch (option) {
@@ -612,12 +612,12 @@ private static void deleteAcc(Scanner scanner) {
 			// TODO Auto-generated method stub
 	try {
 	if (Session.getCurrentUser() == null) {
-        System.out.println("You must be logged in to delete your account.");
+        System.out.println("You must be logged in to delete your account.❗️");
         return;
     }
     
     // Prompt the user to confirm that they want to delete their account.
-    System.out.println("Are you sure you want to delete your account? (y/n)");
+    System.out.println("Are you sure you want to delete your account? (y/n)🤔");
     String confirmation = scanner.nextLine().trim().toLowerCase();
     if (!confirmation.equals("y")) {
         System.out.println("Account deletion cancelled.");
@@ -666,14 +666,22 @@ private static void changeProfile(Scanner scanner) {
     		String password1=scanner.nextLine();
     		
     		if(users.get(i).getPassword().equals(password1)) {
-    		 System.out.println("Enter password to be Changed: ");
+    		 System.out.println("Enter password to be Changed (leave blank to keep the same): ");
              String password = scanner.nextLine();
-             System.out.println("Enter Email Id to be Changed: ");
+             if (!password.isEmpty()) {
+            	 users.get(i).setPassword(password);
+     			}
+             System.out.println("Enter Email Id to be Changed (leave blank to keep the same):");
              String emailId = scanner.nextLine();
-             System.out.println("Enter mobile number to be Changed: ");
+             if (!emailId.isEmpty()) {
+            	 users.get(i).setPassword(emailId);
+     			}
+             System.out.println("Enter mobile number to be Changed (leave blank to keep the same): ");
              String mobileNo = scanner.nextLine();
+             if (!mobileNo.isEmpty()) {
+            	 users.get(i).setPassword(mobileNo);
+     			}
     		
-    		users.get(i).setPassword(password);
     		users.get(i).setEmail(emailId);
     		users.get(i).setMobileNo(mobileNo);
     		}
@@ -714,7 +722,7 @@ private static void BookingHistory(Scanner scanner) {
         System.out.println(i + 1 + ". " + bookingList.get(i));
     }
     	else {
-    		System.out.println("No booking Found for "+userName);
+    		System.out.println("No booking Found for ❗️"+userName);
     	}
 		}
 		}
@@ -823,13 +831,13 @@ if(buses.size()==0) {
    
     
     
-    System.out.println("Booking successful. Your seat number is " + seatNumber + "."+ "of Bus :"+selectedBus.getBusName() +"on "+selectedBus.getDepartureTime() );		
-    System.out.println("------Thank You For Using Bus Safar--------");
+    System.out.println("Booking successful. Your seat number is " + seatNumber + " of Bus "+selectedBus.getBusName() +" on "+selectedBus.getDepartureTime() );		
+    System.out.println("------😊Thank You For Using Bus Safar😊--------");
     System.out.println("                        ");
     
     
    		System.out.println("Enter an option:");
-   		System.out.println("Enter 1 for main menu");
+   		System.out.println("Enter 1 for main menu🔙");
    	    System.out.println("Enter 0 for Exit");
    	    
             int optio = scanner.nextInt();

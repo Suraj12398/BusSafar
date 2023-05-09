@@ -64,7 +64,7 @@ public class Bookings implements Serializable{
 	                ", busname=' " + busName + '\'' +
 	                ", Seat No.= " + numSeats +
 	                ", Departure Time= " + departureTime +
-	                '}';
+	                '}'+ '\n';
 }
 
 		public String getDestination() {

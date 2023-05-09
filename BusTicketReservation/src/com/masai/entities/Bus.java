@@ -85,7 +85,7 @@ public class Bus implements Serializable{
 	                ", busType='" + busType + '\'' +
 	                ", departureTime=" + departureTime +
 	                ", arrivalTime=" + arrivalTime +
-	                ", totalSeats=" + totalSeats 
+	                ", totalSeats=" + totalSeats +'\n'
 	                ;
 	    }
 
