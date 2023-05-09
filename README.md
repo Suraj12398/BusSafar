@@ -27,6 +27,6 @@
 #Concepts Used
  <p>oops</p>
  <p>Collection Framework</p>
- <p>Searialization</p>
+ <p>Serialization</p>
  <p>Exception handling</p>
  <p>Deserialization</p>
