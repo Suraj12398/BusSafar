@@ -16,7 +16,7 @@
     <br>
   <h2>Passenger<h2/>
     
-    <p>Sign up Sign in<p/>
+   <p>Sign up Sign in<p/>
    <p>View All Buses<p/>
    <p>Book Seat by seat number<p/>
    <p>Search bus by city name<p/>
