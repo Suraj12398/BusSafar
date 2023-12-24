@@ -1,6 +1,6 @@
 ## Bus Reservation System
 <h1>Bus Safar<h1/>
-  The Bus Reservation System is a comprehensive application that serves both administrators and passengers, providing a seamless experience for managing bus services and bookings. The system is built on fundamental object-oriented programming (OOP) principles and incorporates advanced concepts such as the Collection Framework, Serialization, Exception Handling, and Deserialization to ensure efficiency and reliability.
+ <p> The Bus Reservation System is a comprehensive application that serves both administrators and passengers, providing a seamless experience for managing bus services and bookings. The system is built on fundamental object-oriented programming (OOP) principles and incorporates advanced concepts such as the Collection Framework, Serialization, Exception Handling, and Deserialization to ensure efficiency and reliability.</p>
 <h2>===LOGO===</h2>
 <img src="https://drive.google.com/uc?export=view&id=16AQ0Jf5e92IBs9pGbuLwI-ocfoyLPvkS" style="width: 350px; max-width: 100%; height: auto"; title="Click to enlarge picture" />
 
